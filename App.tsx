@@ -4,7 +4,7 @@ import LoginPage from './src/screen/Login/LoginPage.tsx';
 function App() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <LoginPage />
       </SafeAreaView>
     </SafeAreaProvider>
