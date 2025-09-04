@@ -1,6 +1,9 @@
 import { Platform, StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   mainWrapper: {
     margin: 20,
     flex: 1,
@@ -54,6 +57,19 @@ export default StyleSheet.create({
       ios: 14,
       default: 12,
     }),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  activePasswordBtn: {
+    height: 15,
+    width: 15,
+    backgroundColor: '#6a932d',
+  },
+  disablePasswordBtn: {
+    height: 15,
+    width: 15,
+    backgroundColor: '#7a5143',
   },
   formContainer: {
     marginTop: 28,

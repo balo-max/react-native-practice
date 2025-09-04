@@ -1,15 +1,7 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import styles from './styles';
 import { useState } from 'react';
+import AuthLayout from '../../components/AuthLayout';
 
 interface InputProps {
   email: string;
@@ -19,6 +11,7 @@ interface InputProps {
 }
 
 export default function LoginPage() {
+  const [isPassHidden, setIsPassHidden] = useState(false);
   const [inputValues, setInputValues] = useState<InputProps>({
     email: '',
     password: '',
@@ -61,64 +54,69 @@ export default function LoginPage() {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.mainWrapper}>
-        <KeyboardAvoidingView
-          keyboardVerticalOffset={Platform.select({ android: 20, ios: 90 })}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Welcome!</Text>
-            <Text style={styles.welcomeText}>We help you find your friend</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.loginBtn}>
-              <Text style={styles.authText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.registerBtn}>
-              <Text style={styles.authText}>Registration</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.formContainer}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                value={inputValues.email}
-                placeholder={'Email'}
-                style={styles.input}
-                placeholderTextColor={'#838383'}
-                onChangeText={text => {
-                  handleChange('email', text);
-                  checkValidEmail(text);
-                }}
-                // onBlur={checkValidEmail}
-              />
-            </View>
-            {inputValues.errorEmail && <Text>{inputValues.errorEmail}</Text>}
-            <View style={styles.inputContainer}>
-              <TextInput
-                value={inputValues.password}
-                placeholder={'password'}
-                style={styles.input}
-                placeholderTextColor={'#838383'}
-                onChangeText={text => {
-                  handleChange('password', text);
-                  checkValidPassword(text);
-                }}
-                secureTextEntry={true}
-              />
-            </View>
-            {inputValues.errorPassword && (
-              <Text>{inputValues.errorPassword}</Text>
-            )}
-          </View>
-          <TouchableOpacity
-            disabled={isDisabledLoginBtn}
-            style={styles.loginBtnContainer}
-          >
-            <Text style={styles.loginText}>Увійти</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
+    <AuthLayout>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Welcome!</Text>
+        <Text style={styles.welcomeText}>We help you find your friend</Text>
       </View>
-    </TouchableWithoutFeedback>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.loginBtn}>
+          <Text style={styles.authText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.registerBtn}>
+          <Text style={styles.authText}>Registration</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.formContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            value={inputValues.email}
+            placeholder={'Email'}
+            style={styles.input}
+            placeholderTextColor={'#838383'}
+            onChangeText={text => {
+              handleChange('email', text);
+              checkValidEmail(text);
+            }}
+            // onBlur={checkValidEmail}
+          />
+        </View>
+        {inputValues.errorEmail && <Text>{inputValues.errorEmail}</Text>}
+        <View style={styles.inputContainer}>
+          <TextInput
+            value={inputValues.password}
+            placeholder={'password'}
+            style={styles.input}
+            placeholderTextColor={'#838383'}
+            onChangeText={text => {
+              handleChange('password', text);
+              checkValidPassword(text);
+            }}
+            secureTextEntry={isPassHidden}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              setIsPassHidden(!isPassHidden);
+            }}
+            hitSlop={{ top: 15, bottom: 15, right: 15, left: 15 }}
+            style={
+              isPassHidden
+                ? styles.disablePasswordBtn
+                : styles.activePasswordBtn
+            }
+          />
+        </View>
+        {inputValues.errorPassword && <Text>{inputValues.errorPassword}</Text>}
+      </View>
+      <TouchableOpacity
+        disabled={isDisabledLoginBtn}
+        style={[
+          styles.loginBtnContainer,
+          isDisabledLoginBtn && { opacity: 0.5 },
+        ]}
+      >
+        <Text style={styles.loginText}>Увійти</Text>
+      </TouchableOpacity>
+    </AuthLayout>
   );
 }
