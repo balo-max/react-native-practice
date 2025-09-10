@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import styles from './styles';
 import { useState } from 'react';
 import AuthLayout from '../../components/AuthLayout';
+import { HidePassIcon, ViewPassIcon } from '../../assets/icons';
 
 interface InputProps {
   email: string;
@@ -99,12 +100,13 @@ export default function LoginPage() {
               setIsPassHidden(!isPassHidden);
             }}
             hitSlop={{ top: 15, bottom: 15, right: 15, left: 15 }}
-            style={
-              isPassHidden
-                ? styles.disablePasswordBtn
-                : styles.activePasswordBtn
-            }
-          />
+          >
+            {isPassHidden ? (
+              <ViewPassIcon fill={'#000000'} />
+            ) : (
+              <HidePassIcon fill={'#a36161'} />
+            )}
+          </TouchableOpacity>
         </View>
         {inputValues.errorPassword && <Text>{inputValues.errorPassword}</Text>}
       </View>

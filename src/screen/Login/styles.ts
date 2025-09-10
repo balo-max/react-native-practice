@@ -1,4 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
+import { fonts } from '../../constants/fonts.ts';
 
 export default StyleSheet.create({
   container: {
@@ -13,6 +14,7 @@ export default StyleSheet.create({
   title: {
     fontSize: 24,
     color: 'black',
+    fontFamily: fonts.raleway,
   },
   welcomeText: {
     fontSize: 16,
