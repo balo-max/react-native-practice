@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import styles from '../../screen/Login/styles';
+import styles from '../../styles.ts';
 import { ReactNode } from 'react';
 
 interface MyComponentProps {

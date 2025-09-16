@@ -89,4 +89,18 @@ export default StyleSheet.create({
   loginText: {
     color: 'white',
   },
+  activeTab: {
+    alignItems: 'center',
+    backgroundColor: '#F8F8F9',
+    padding: 10,
+    borderRadius: 20,
+    flex: 1,
+  },
+  disabledTab: {
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 20,
+    flex: 1,
+    opacity: 0.7,
+  },
 });

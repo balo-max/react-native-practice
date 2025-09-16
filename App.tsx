@@ -1,11 +1,11 @@
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import LoginPage from './src/screen/Login/LoginPage.tsx';
+import { RootNavigation } from './src/navigation';
 
 function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }}>
-        <LoginPage />
+        <RootNavigation />
       </SafeAreaView>
     </SafeAreaProvider>
   );
