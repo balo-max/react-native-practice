@@ -1,5 +1,6 @@
 import { Platform, StyleSheet } from 'react-native';
 import { fonts } from '../../constants/fonts.ts';
+import { black } from 'colorette';
 
 export default StyleSheet.create({
   container: {
@@ -9,7 +10,7 @@ export default StyleSheet.create({
     margin: 20,
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#f0f0f0',
   },
   title: {
     fontSize: 24,

@@ -1,9 +1,11 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import styles from '../styles.ts';
 import { useState } from 'react';
 import AuthLayout from '../components/AuthLayout';
 import AuthHeader from '../components/AuthHeader';
 import Input from '../../../common/components/Input';
+import auth from '@react-native-firebase/auth';
+import DefaultButton from '../../../common/components/DefaultButton';
 
 interface InputProps {
   email: string;
@@ -47,6 +49,15 @@ export default function Login() {
     }
   };
 
+  const onLogin = async (email: string, password: string) => {
+    try {
+      const data = await auth().signInWithEmailAndPassword(email, password);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const isDisabledLoginBtn = Boolean(
     inputValues.errorEmail ||
       inputValues.errorPassword ||
@@ -78,15 +89,13 @@ export default function Login() {
           secureTextEntry={true}
         />
       </View>
-      <TouchableOpacity
+      <DefaultButton
+        onPress={() => {
+          return onLogin(inputValues.email, inputValues.password);
+        }}
         disabled={isDisabledLoginBtn}
-        style={[
-          styles.loginBtnContainer,
-          isDisabledLoginBtn && { opacity: 0.5 },
-        ]}
-      >
-        <Text style={styles.loginText}>Увійти</Text>
-      </TouchableOpacity>
+        text={'Увійти'}
+      />
     </AuthLayout>
   );
 }

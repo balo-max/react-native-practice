@@ -39,7 +39,7 @@ export default function Input({
           onFocus={onFocus}
           value={value}
           onChangeText={text => onChangeText(text)}
-          secureTextEntry={!isPassHidden}
+          secureTextEntry={isPassHidden}
         />
         {secureTextEntry && (
           <TouchableOpacity
