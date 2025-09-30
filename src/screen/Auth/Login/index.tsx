@@ -1,11 +1,15 @@
 import { View } from 'react-native';
 import styles from '../styles.ts';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AuthLayout from '../components/AuthLayout';
 import AuthHeader from '../components/AuthHeader';
 import Input from '../../../common/components/Input';
 import auth from '@react-native-firebase/auth';
 import DefaultButton from '../../../common/components/DefaultButton';
+import { RootStackNavigation } from '../../../navigation/types';
+import { CommonActions, useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { ScreenNames } from '../../../constants/screenNames.ts';
 
 interface InputProps {
   email: string;
@@ -15,6 +19,8 @@ interface InputProps {
 }
 
 export default function Login() {
+  const navigation = useNavigation<StackNavigationProp<RootStackNavigation>>();
+
   const [inputValues, setInputValues] = useState<InputProps>({
     email: '',
     password: '',
@@ -57,6 +63,21 @@ export default function Login() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(user => {
+      if (user) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{name: ScreenNames.LOGGED_IN_STACK}],
+          }),
+        );
+      }
+    });
+
+    return subscriber;
+  }, [navigation]);
 
   const isDisabledLoginBtn = Boolean(
     inputValues.errorEmail ||

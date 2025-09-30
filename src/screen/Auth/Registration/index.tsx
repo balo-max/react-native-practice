@@ -6,8 +6,12 @@ import Input from '../../../common/components/Input/index';
 import { Formik, FormikHelpers, FormikValues } from 'formik';
 import { RegistrationSchema } from '../utils/validations';
 import DefaultButton from '../../../common/components/DefaultButton/index';
-import { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
+import { RootStackNavigation } from '../../../navigation/types';
+import { CommonActions, useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useState } from 'react';
+import { ScreenNames } from '../../../constants/screenNames.ts';
 
 interface ITouched {
   email: boolean;
@@ -22,6 +26,8 @@ interface MyFormValues {
 }
 
 export default function Registration() {
+  const navigation = useNavigation<StackNavigationProp<RootStackNavigation>>();
+
   const [touched, setTouched] = useState<ITouched>({
     email: false,
     password: false,
@@ -38,6 +44,14 @@ export default function Registration() {
         value.password,
       );
       console.log(data);
+      if (data.user) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: ScreenNames.LOGGED_IN_STACK }],
+          }),
+        );
+      }
     } catch (error: any) {
       console.log('Error: ', error);
       if (error.code === 'auth/email-already-in-use') {
@@ -45,14 +59,6 @@ export default function Registration() {
       }
     }
   };
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(user => {
-      console.log('user', user);
-    });
-
-    return subscriber;
-  }, []);
 
   return (
     <AuthLayout>
