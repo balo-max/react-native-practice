@@ -1,6 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
 import { fonts } from '../../constants/fonts.ts';
-import { black } from 'colorette';
 
 export default StyleSheet.create({
   container: {

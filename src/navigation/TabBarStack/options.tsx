@@ -1,7 +1,6 @@
 import { ScreenNames } from '../../constants/screenNames.ts';
 import PawIcon from '../../assets/icons/PawIcon.tsx';
 import HeartIcon from '../../assets/icons/HeartIcon.tsx';
-import Label from '../../assets/icons/Label.tsx';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
 import { fonts } from '../../constants/fonts.ts';
@@ -30,31 +29,17 @@ export default function getTabOptions(
 ): BottomTabNavigationOptions {
   return {
     tabBarStyle: {
-      height: 80,
+      height: 52,
       width: '100%',
       backgroundColor: '#E5F3F5',
       borderTopRightRadius: 50,
       borderTopLeftRadius: 50,
     },
     tabBarShowLabel: false,
-    header: () => {
-      return (
-        <View
-          style={{
-            width: '100%',
-            height: 60,
-            padding: 10,
-          }}
-        >
-          <Label />
-        </View>
-      );
-    },
+    headerShown: false,
     tabBarIcon: ({ focused }) => {
       return (
-        <View
-          style={{ width: 100, alignItems: 'center', gap: 5, marginTop: 20 }}
-        >
+        <View style={{ width: 100, alignItems: 'center', gap: 5, marginTop: 10 }}>
           {getIcon(route.name, focused)}
           <Text
             style={{
