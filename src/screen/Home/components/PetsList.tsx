@@ -10,8 +10,18 @@ import {
 import { IPets } from '../index.tsx';
 import { fonts } from '../../../constants/fonts.ts';
 import FavoriteIcon from '../../../assets/icons/FavoriteIcon.tsx';
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { LoggedInStackType } from '../../../navigation/types';
+import { ScreenNames } from '../../../constants/screenNames.ts';
 
 export default function PetsList({ pets }: { pets: IPets[] }) {
+  const navigation = useNavigation<StackNavigationProp<LoggedInStackType>>();
+
+  const handleGoToPet = (item: IPets) => {
+    navigation.navigate(ScreenNames.PET_PAGE, { pets: item });
+  };
+
   return (
     <View style={styles.flex}>
       <FlatList
@@ -20,7 +30,10 @@ export default function PetsList({ pets }: { pets: IPets[] }) {
         numColumns={2}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() => handleGoToPet(item)}
+            >
               <ImageBackground
                 source={{ uri: item.images[0] }}
                 imageStyle={{ borderRadius: 20 }}
@@ -31,6 +44,7 @@ export default function PetsList({ pets }: { pets: IPets[] }) {
                   <FavoriteIcon />
                 </TouchableOpacity>
                 <View style={styles.textContainer}>
+                  <Text style={styles.text}>{item.name}</Text>
                   <Text style={styles.text}>{item.type}</Text>
                   <Text style={styles.text}>{item.age} years</Text>
                 </View>

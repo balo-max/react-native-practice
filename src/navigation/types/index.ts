@@ -1,3 +1,6 @@
+import { IPets } from '../../screen/Home';
+import {ISettings} from '../../screen/FilterSettings';
+
 export type LoggedOutStackType = {
   LOGIN_PAGE: undefined;
   REGISTRATION_PAGE: undefined;
@@ -6,10 +9,21 @@ export type DrawerStackType = {
   TAB_BAR_STACK: undefined;
 };
 export type LoggedInStackType = {
-  DRAWER_STACK: undefined;
+  DRAWER_STACK: {
+    screen?: keyof TabBarStackType;
+    params?: TabBarStackType[keyof TabBarStackType];
+  };
+  FILTERS_SETTINGS_PAGE: {
+    petsList: IPets[];
+  };
+  PET_PAGE: {
+    pets: IPets;
+  }
 };
 export type TabBarStackType = {
-  HOME_PAGE: undefined;
+  HOME_PAGE: {
+    settings: ISettings;
+  };
   FAVORITE_PAGE: undefined;
 };
 

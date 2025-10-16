@@ -1,4 +1,7 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerContentComponentProps,
+} from '@react-navigation/drawer';
 import { DrawerStackType } from '../types';
 import { ScreenNames } from '../../constants/screenNames.ts';
 import TabBarStack from '../TabBarStack';
@@ -8,7 +11,8 @@ import { Dimensions } from 'react-native';
 
 const Drawer = createDrawerNavigator<DrawerStackType>();
 
-const renderDrawerContent = () => <DrawerContent/>
+// const renderDrawerContent = () => <DrawerContent/>
+const renderDrawerContent = (props: DrawerContentComponentProps) => <DrawerContent {...props} />;
 const renderHeader = () => <Header/>
 
 export default function DrawerStack() {
