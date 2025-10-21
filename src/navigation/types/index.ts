@@ -1,6 +1,8 @@
 import { IPets } from '../../screen/Home';
 import {ISettings} from '../../screen/FilterSettings';
 
+
+
 export type LoggedOutStackType = {
   LOGIN_PAGE: undefined;
   REGISTRATION_PAGE: undefined;

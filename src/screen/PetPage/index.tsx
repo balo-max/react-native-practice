@@ -1,4 +1,5 @@
 import {
+  Image,
   ImageBackground,
   ScrollView,
   StyleSheet,
@@ -18,12 +19,43 @@ import ArrowIcon from '../../assets/icons/ArrowIcon.tsx';
 import HeartIcon from '../../assets/icons/HeartIcon.tsx';
 import LongArrowIcon from '../../assets/icons/LongArrorIcon.tsx';
 import PlaceIcon from '../../assets/icons/PlaceIcon.tsx';
+import Modal from 'react-native-modal';
+import CloseIcon from '../../assets/icons/CloseIcon.tsx';
+import Input from '../../common/components/Input';
+
+const DogImage = require('../../assets/icons/png/dogIcon.png');
+
+interface IFormInfo {
+  name: string;
+  phone: string;
+  email: string;
+  comment?: string;
+  numberOfLines?: number;
+  additionalContainerStyle?: object;
+}
 
 export default function PetPage() {
   const route = useRoute<RouteProp<{ params: { pets: IPets } }>>();
   const navigation = useNavigation<StackNavigationProp<LoggedInStackType>>();
 
   const [sliderIndex, setSliderIndex] = useState<number>(0);
+  const [formInfo, setFormInfo] = useState<IFormInfo>({
+    name: '',
+    phone: '',
+    email: '',
+    comment: '',
+  });
+
+  const [isFormModalVisible, setFormModalVisible] = useState<{
+    isVisible: boolean;
+    isCompleted: boolean;
+  }>({
+    isVisible: false,
+    isCompleted: false,
+  });
+
+  const [isSuccessModalVisible, setSuccessIsModalVisible] =
+    useState<boolean>(false);
 
   const handleNext = () => {
     if (sliderIndex + 1 < route?.params?.pets?.images.length) {
@@ -39,6 +71,10 @@ export default function PetPage() {
     } else {
       setSliderIndex(route?.params?.pets?.images.length);
     }
+  };
+
+  const handleSubmitForm = (key: string, value: string) => {
+    setFormInfo(prev => ({ ...prev, [key]: value }));
   };
 
   console.log('route?.params?.pet', route?.params?.pets);
@@ -146,9 +182,142 @@ export default function PetPage() {
               </Text>
             </View>
           </View>
-          <DefaultButton onPress={() => {}} text={"Подарувати сім'ю"} />
+          <DefaultButton
+            onPress={() => {
+              setFormModalVisible(prevState => ({
+                ...prevState,
+                isVisible: true,
+              }));
+            }}
+            text={"Подарувати сім'ю"}
+          />
         </View>
       </View>
+      <Modal
+        isVisible={isFormModalVisible.isVisible}
+        onBackdropPress={() => {
+          setFormModalVisible(prevState => ({
+            ...prevState,
+            isVisible: false,
+          }));
+        }}
+        onModalHide={() => {
+          if (isFormModalVisible.isCompleted) {
+            setSuccessIsModalVisible(true);
+          }
+        }}
+      >
+        <View style={styles.modalContainer}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ gap: 10 }}>
+              <Text style={{ fontFamily: fonts.raleway, fontSize: 24 }}>
+                Забрати хвостика додому
+              </Text>
+              <Text style={{ fontFamily: fonts.raleway }}>
+                Залиш свої дані і ми з тобою зв’яжемося
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() =>
+                setFormModalVisible(prevState => ({
+                  ...prevState,
+                  isVisible: false,
+                }))
+              }
+            >
+              <CloseIcon />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text>Ім'я</Text>
+            <Input
+              value={formInfo.name}
+              placeholder={"Введи своє ім'я"}
+              onChangeText={text => {
+                handleSubmitForm('name', text);
+              }}
+            />
+          </View>
+          <View>
+            <Text>Телефон</Text>
+            <Input
+              value={formInfo.phone}
+              placeholder={'+380'}
+              onChangeText={text => {
+                handleSubmitForm('phone', text);
+              }}
+            />
+          </View>
+          <View>
+            <Text>Email</Text>
+            <Input
+              value={formInfo.email}
+              placeholder={'Введи свою пошту'}
+              onChangeText={text => {
+                handleSubmitForm('email', text);
+              }}
+            />
+          </View>
+          <View>
+            <Text>Коментар</Text>
+            <Input
+              placeholder={'Залиш коментар'}
+              value={formInfo.comment ?? ''}
+              onChangeText={text => {
+                handleSubmitForm('comment', text);
+              }}
+              // numberOfLines={3}
+              additionalContainerStyle={{
+                height: 100,
+                alignItems: 'flex-start',
+              }}
+            />
+          </View>
+          <DefaultButton
+            disabled={!formInfo.email || !formInfo.phone || !formInfo.name}
+            onPress={() => {
+              setFormModalVisible({
+                isCompleted: true,
+                isVisible: false,
+              });
+            }}
+            text={'Забрати хвостика додому'}
+          />
+        </View>
+      </Modal>
+      <Modal
+        isVisible={isSuccessModalVisible}
+        onBackdropPress={() => setSuccessIsModalVisible(false)}
+      >
+        <View style={[styles.modalContainer, { height: 300 }]}>
+          <View style={{ flexDirection: 'row' }}>
+            <Image
+              source={DogImage}
+              style={{ width: 80, height: 80, flex: 1 }}
+              resizeMode={'contain'}
+            />
+            <TouchableOpacity onPress={() => setSuccessIsModalVisible(false)}>
+              <CloseIcon />
+            </TouchableOpacity>
+          </View>
+          <View style={{ gap: 10, alignItems: 'center' }}>
+            <Text style={{ fontFamily: fonts.raleway, fontSize: 24 }}>
+              Дякуємо за заявку!
+            </Text>
+            <Text style={{ fontFamily: fonts.raleway }}>
+              Вітаємо! Ти на крок ближче до того щоб завести собі пухнастого
+              друга. Ми скоро зв’яжемося з тобою.
+            </Text>
+          </View>
+          <DefaultButton
+            onPress={() => {
+              setSuccessIsModalVisible(false);
+              setFormModalVisible({ isVisible: false, isCompleted: false });
+            }}
+            text={'Окей'}
+          />
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -224,4 +393,12 @@ const styles = StyleSheet.create({
   },
   characterText: { fontFamily: fonts.raleway, color: 'black' },
   characterContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  modalContainer: {
+    width: '100%',
+    height: 600,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    gap: 20,
+  },
 });
