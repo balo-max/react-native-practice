@@ -10,17 +10,59 @@ import {
 import { IPets } from '../index.tsx';
 import { fonts } from '../../../constants/fonts.ts';
 import FavoriteIcon from '../../../assets/icons/FavoriteIcon.tsx';
-import { useNavigation } from '@react-navigation/core';
+import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LoggedInStackType } from '../../../navigation/types';
 import { ScreenNames } from '../../../constants/screenNames.ts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useCallback, useState } from 'react';
+
+export const handleAddToFavorites = async (pet: IPets) => {
+  try {
+    const favorites = await AsyncStorage.getItem('favorites');
+
+    if (favorites) {
+      const result: IPets[] = JSON.parse(favorites);
+      if (result.find(e => e.timeStamp === pet.timeStamp)) {
+        const filterResult = result.filter(e => e.timeStamp !== pet.timeStamp);
+        await AsyncStorage.setItem('favorites', JSON.stringify(filterResult));
+        return;
+      }
+      await AsyncStorage.setItem('favorites', JSON.stringify([...result, pet]));
+    } else {
+      await AsyncStorage.setItem('favorites', JSON.stringify([pet]));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export default function PetsList({ pets }: { pets: IPets[] }) {
   const navigation = useNavigation<StackNavigationProp<LoggedInStackType>>();
 
+  const [favorites, setFavorites] = useState<IPets[]>([]);
+
   const handleGoToPet = (item: IPets) => {
     navigation.navigate(ScreenNames.PET_PAGE, { pets: item });
   };
+
+  const getFavorites = async () => {
+    try {
+      const favorite = await AsyncStorage.getItem('favorites');
+      if (favorite) {
+        const result = JSON.parse(favorite);
+        setFavorites(result);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getFavorites();
+    }, []),
+  );
 
   return (
     <View style={styles.flex}>
@@ -40,8 +82,19 @@ export default function PetsList({ pets }: { pets: IPets[] }) {
                 style={styles.image}
                 resizeMode={'cover'}
               >
-                <TouchableOpacity style={{ alignSelf: 'flex-end', margin: 10 }}>
-                  <FavoriteIcon />
+                <TouchableOpacity
+                  style={{ alignSelf: 'flex-end', margin: 10 }}
+                  onPress={() => {
+                    handleAddToFavorites(item).then(() => {
+                      getFavorites();
+                    });
+                  }}
+                >
+                  <FavoriteIcon
+                    isFavorite={
+                      !!favorites.find(e => e.timeStamp === item.timeStamp)
+                    }
+                  />
                 </TouchableOpacity>
                 <View style={styles.textContainer}>
                   <Text style={styles.text}>{item.name}</Text>
