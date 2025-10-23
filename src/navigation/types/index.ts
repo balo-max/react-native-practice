@@ -1,7 +1,5 @@
 import { IPets } from '../../screen/Home';
-import {ISettings} from '../../screen/FilterSettings';
-
-
+import { ISettings } from '../../screen/FilterSettings';
 
 export type LoggedOutStackType = {
   LOGIN_PAGE: undefined;
@@ -20,12 +18,12 @@ export type LoggedInStackType = {
   };
   PET_PAGE: {
     pets: IPets;
-  }
+  };
 };
 export type TabBarStackType = {
   HOME_PAGE: {
-    settings: ISettings;
-  };
+    settings?: ISettings
+  } | undefined;
   FAVORITE_PAGE: undefined;
 };
 
@@ -37,6 +35,6 @@ const LoggedInStackScreens: DrawerStackType = {
   TAB_BAR_STACK: undefined,
 };
 export type RootStackNavigation = {
-  LOGGED_IN_STACK: {screens?: keyof typeof LoggedInStackScreens};
-  LOGGED_OUT_STACK: {screens?: keyof typeof LoggedOutStackScreens};
+  LOGGED_IN_STACK: { screens?: keyof typeof LoggedInStackScreens };
+  LOGGED_OUT_STACK: { screens?: keyof typeof LoggedOutStackScreens };
 };
