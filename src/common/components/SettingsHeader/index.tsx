@@ -5,7 +5,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { fonts } from '../../../constants/fonts.ts';
 import ArrowIcon from '../../../assets/icons/ArrowIcon.tsx';
 
-export default function SettingsHeader() {
+export default function SettingsHeader({title = 'Фільтри'}) {
   const navigation = useNavigation<StackNavigationProp<LoggedInStackType>>();
   return (
     <View style={styles.mainWrapper}>
@@ -15,7 +15,7 @@ export default function SettingsHeader() {
       >
         <ArrowIcon width={20} height={20} />
       </TouchableOpacity>
-      <Text style={styles.title}>Фільтри</Text>
+      <Text style={styles.title}>{title}</Text>
     </View>
   );
 }

@@ -13,6 +13,7 @@ export type LoggedInStackType = {
     screen?: keyof TabBarStackType;
     params?: TabBarStackType[keyof TabBarStackType];
   };
+  LANGUAGES_PAGE: undefined;
   FILTERS_SETTINGS_PAGE: {
     petsList: IPets[];
   };

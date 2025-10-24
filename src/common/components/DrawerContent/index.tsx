@@ -3,8 +3,19 @@ import Header from '../Header';
 import ArrowIcon from '../../../assets/icons/ArrowIcon.tsx';
 import { fonts } from '../../../constants/fonts.ts';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
+// import { useNavigation } from '@react-navigation/core';
+// import { StackNavigationProp } from '@react-navigation/stack';
+// import { LoggedInStackType } from '../../../navigation/types';
+import { ScreenNames } from '../../../constants/screenNames.ts';
+// import { DrawerActions } from '@react-navigation/native';
 
 export default function DrawerContent({navigation }: DrawerContentComponentProps) {
+  // const nav = useNavigation<StackNavigationProp<LoggedInStackType>>();
+  const navigateToLanguages = () => {
+    navigation.navigate(ScreenNames.LANGUAGES_PAGE);
+    // navigation.dispatch(DrawerActions.toggleDrawer());
+  };
+
   return (
     <View>
       <Header isOpenDrawer={true} navigation={navigation}/>
@@ -13,7 +24,7 @@ export default function DrawerContent({navigation }: DrawerContentComponentProps
           <Text style={styles.text}>Наш сайт</Text>
           <ArrowIcon />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnWrapper}>
+        <TouchableOpacity style={styles.btnWrapper} onPress={navigateToLanguages}>
           <Text style={styles.text}>Налаштування мови</Text>
           <ArrowIcon />
         </TouchableOpacity>

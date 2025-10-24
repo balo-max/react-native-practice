@@ -1,10 +1,12 @@
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { RootNavigation } from './src/navigation';
 import 'react-native-gesture-handler';
+import SplashScreen from 'react-native-splash-screen';
+import './i18.config';
 
 // import {firebase} from '@react-native-firebase/firestore';
 // import {animals} from './animals_list.js';
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 
 
 
@@ -26,9 +28,10 @@ function App() {
   //   }
   // };
   //
-  // useEffect(() => {
-  //   uploadAnimalsToFirestore(animals);
-  // }, []);
+  useEffect(() => {
+    // uploadAnimalsToFirestore(animals);
+    SplashScreen.hide();
+  }, []);
 
   return (
     <SafeAreaProvider>

@@ -5,13 +5,14 @@ import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
 import { fonts } from '../../constants/fonts.ts';
 import { RouteProp } from '@react-navigation/native';
+import i18n from '../../../i18.config';
 
 const getName = (name: string) => {
   switch (name) {
     case ScreenNames.FAVORITE_PAGE:
-      return 'Улюблюені';
+      return i18n.t('favorite');
     case ScreenNames.HOME_PAGE:
-      return 'Пухнастики';
+      return i18n.t('fluffies');
   }
 };
 
