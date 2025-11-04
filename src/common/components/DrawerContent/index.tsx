@@ -16,11 +16,15 @@ export default function DrawerContent({navigation }: DrawerContentComponentProps
     // navigation.dispatch(DrawerActions.toggleDrawer());
   };
 
+  const navigateToWebPage = () => {
+    navigation.navigate(ScreenNames.WEB_PAGE);
+  };
+
   return (
     <View>
       <Header isOpenDrawer={true} navigation={navigation}/>
       <View style={styles.mainWrapper}>
-        <TouchableOpacity style={styles.btnWrapper}>
+        <TouchableOpacity style={styles.btnWrapper} onPress={navigateToWebPage}>
           <Text style={styles.text}>Наш сайт</Text>
           <ArrowIcon />
         </TouchableOpacity>

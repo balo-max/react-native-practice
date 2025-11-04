@@ -10,4 +10,5 @@ export enum ScreenNames {
   DRAWER_STACK = 'DRAWER_STACK',
   PET_PAGE = 'PET_PAGE',
   LANGUAGES_PAGE = 'LANGUAGES_PAGE',
+  WEB_PAGE = 'WEB_PAGE',
 }
